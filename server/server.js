@@ -28,6 +28,16 @@ app.post('/todos',(req,res)=>{
 });
 
 
+app.get('/todos',(req,res)=>{
+
+  Todo.find().then((doc)=>{
+    res.send({doc});
+  }).catch((err)=>{
+    res.status(400).send(err);
+  });
+});
+
+
 
 // var newTodo= new Todo({
 //   text:'heloo this is sneha  collection'
