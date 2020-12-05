@@ -6,10 +6,12 @@ var {mongoose} =require('./db/mongoose');
 var {Todo} =require('./models/todo');
 var {User} =require('./models/user');
 
+var port = process.env.PORT||3000;
+
 var app=express();
 
-app.listen(3000,()=>{
-  console.log("server started on port 3000");
+app.listen(post,()=>{
+  console.log(`server started on port ${port}`);
 })
 
 app.use(bodyParser.json());
