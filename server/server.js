@@ -34,7 +34,7 @@ app.post('/todos',(req,res)=>{
 app.get('/todos',(req,res)=>{
 
   Todo.find().then((doc)=>{
-    res.send({doc});
+    res.send(doc);
   }).catch((err)=>{
     res.status(400).send(err);
   });
@@ -53,7 +53,7 @@ app.get('/todos/:id',(req,res)=>{
       //return console.log('user not found');
       res.status(404).send();
     }
-    res.send({todo});
+    res.send(todo);
   }).catch((err)=>{
     res.status(404).send();
   });
