@@ -1,5 +1,6 @@
-var express=require('express');
-var bodyParser=require('body-parser');
+const _ =require('lodash');
+const express=require('express');
+const bodyParser=require('body-parser');
 const {ObjectID}=require('mongodb');
 
 var {mongoose} =require('./db/mongoose');
@@ -43,7 +44,7 @@ app.get('/todos',(req,res)=>{
 app.get('/todos/:id',(req,res)=>{
   //res.send(req.params.id);
 
-  var id=req.params.id;
+  var id =req.params.id;
   if (!ObjectID.isValid(id)) {
     res.status(404).send();
   }
@@ -51,7 +52,7 @@ app.get('/todos/:id',(req,res)=>{
   Todo.findById(id).then((todo)=>{
     if (!todo) {
       //return console.log('user not found');
-      res.status(404).send();
+      return res.status(404).send();
     }
     res.send(todo);
   }).catch((err)=>{
@@ -60,7 +61,58 @@ app.get('/todos/:id',(req,res)=>{
 
 });
 
+app.delete('/todos/:id',(req,res)=>{
 
+  var id=req.params.id;
+
+  if (!ObjectID.isValid(id)) {
+    console.log('id is not valid ');
+      return res.status(404).send();
+  }
+
+  Todo.findByIdAndRemove(id).then((todo)=>{
+    if (!todo) {
+      console.log(' todo is not present ');
+       res.status(404).send();
+    }
+    res.send(todo);
+  }).catch((err)=>{
+    console.log('in catch');
+    res.status(404).send();
+  });
+});
+
+
+
+app.patch('/todos/:id',(req,res)=>{
+  var id=req.params.id;
+
+  if (!ObjectID.isValid(id)) {
+    console.log('id is not valid ');
+      return res.status(404).send();
+  }
+
+  var body= _.pick(req.body,['text','completed',"xyz"]);
+  console.log(body);
+  if (_.isBoolean(body.completed)&&body.completed) {
+    body.completedAt= new Date().getTime();
+  }
+  else{
+    body.completed= false;
+    body.completedAt=null
+  }
+
+  Todo.findByIdAndUpdate(id,{$set:body},{new:true}).then((todo)=>{
+    if (!todo) {
+      console.log(' todo is not present ');
+      return res.status(404).send();
+    }
+    res.send(todo);
+  }).catch((err)=>{
+    console.log('in catch');
+    res.status(404).send();
+  });
+});
 
 
 
