@@ -28,7 +28,6 @@ app.post('/todos',(req,res)=>{
   }).catch((err)=>{
     res.status(400).send(err);
   });
-
 });
 
 
@@ -115,6 +114,22 @@ app.patch('/todos/:id',(req,res)=>{
 });
 
 
+//post Usser request
+app.post('/users',(req,res)=>{
+  var body= _.pick(req.body,['email','password']);
+//  console.log(body);
+ var user=new User(body);
+  //console.log(user);
+
+  user.save().then(()=>{
+    //res.send(user);
+  return user.generateAuthToken(); //doubt  hai
+  }).then((token)=>{
+    res.header('x-auth',token).send(user);
+  }).catch((err)=>{
+    res.status(400).send(err);
+  });
+});
 
 
 
