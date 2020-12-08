@@ -88,7 +88,26 @@ UserSchema.pre('save',function(next){
   }
 });
 
+UserSchema.statics.findByCreadentials=function (email,password){
+  var User=this;//xyz==User
 
+  return User.findOne({email:email}).then((user)=>{
+    if (!user) {
+      return new Promise.reject();
+    }
+
+    return new Promise((resolve,reject)=>{
+      bcrypt.compare(password,user.password,(err,result)=>{
+        if (result) {
+          resolve(user);
+        }
+        else {
+          reject();
+        }
+      });
+    });
+  });
+};
 
 
 var User= mongoose.model('User',UserSchema);
