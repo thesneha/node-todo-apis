@@ -8,7 +8,7 @@ var authenticate=(req,res,next)=>{
     }
     // console.log(req.user);
     // console.log(req.body);
-    req.user=user;//
+    req.user=user;// doubt hai
     req.token=token;
 
     // console.log(req.user);

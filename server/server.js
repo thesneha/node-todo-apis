@@ -119,6 +119,7 @@ app.patch('/todos/:id',(req,res)=>{
 //post Usser request
 app.post('/users',(req,res)=>{
   var body= _.pick(req.body,['email','password']);
+
 //  console.log(body);
  var user=new User(body);
   //console.log(user);
@@ -128,10 +129,9 @@ app.post('/users',(req,res)=>{
   return user.generateAuthToken(); //doubt tha clear ho gya :)
   }).then((token)=>{
     res.header('x-auth',token).send(user);
-    console.log(user);
     res.send(user);
   }).catch((err)=>{
-    res.status(400).send(err);
+    res.status(400).send();
   });
 });
 
@@ -142,6 +142,13 @@ app.post('/users',(req,res)=>{
 app.get('/users/me',authenticate,(req,res)=>{
   res.send(req.user);
 });
+
+
+//
+// app.get('/users/test',(req,res)=>{
+//   console.log(req.user);
+//   res.send('hii');
+// });
 
 
 // var newTodo= new Todo({
